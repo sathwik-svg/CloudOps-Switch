@@ -4,7 +4,7 @@ import { api } from '../services/api';
 import { Check, Copy, FileText, Download, Award, ShieldCheck, Terminal, BookOpen, Video, ExternalLink } from 'lucide-react';
 
 export const HackathonHubView: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'evidence' | 'readme' | 'script' | 'blog' | 'submission' | 'files'>('evidence');
+  const [activeTab, setActiveTab] = useState<'wispr' | 'evidence' | 'readme' | 'script' | 'blog' | 'submission' | 'files'>('wispr');
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [evidence, setEvidence] = useState<MilestoneEvidence | null>(null);
 
@@ -76,6 +76,15 @@ Used official switch.yaml specification with workspace cloudops-switch and room 
       {/* Navigation Sub-Tabs */}
       <div className="flex flex-wrap items-center gap-2 border-b border-slate-800 pb-2 text-xs">
         <button
+          onClick={() => setActiveTab('wispr')}
+          className={`px-3 py-1.5 rounded transition-colors flex items-center gap-1.5 ${
+            activeTab === 'wispr' ? 'bg-purple-900/60 text-purple-300 border border-purple-700/60 font-semibold' : 'text-slate-400 hover:text-slate-200'
+          }`}
+        >
+          <span>🎙️ Wispr Usage Card</span>
+          <span className="text-[10px] bg-purple-500/20 text-purple-300 px-1.5 py-0.2 rounded font-mono">Required</span>
+        </button>
+        <button
           onClick={() => setActiveTab('evidence')}
           className={`px-3 py-1.5 rounded transition-colors ${
             activeTab === 'evidence' ? 'bg-slate-800 text-cyan-400 font-semibold' : 'text-slate-400 hover:text-slate-200'
@@ -124,6 +133,99 @@ Used official switch.yaml specification with workspace cloudops-switch and room 
           Deliverable 1: Repo & Docker Files
         </button>
       </div>
+
+      {/* Tab: Wispr Usage Card */}
+      {activeTab === 'wispr' && (
+        <div className="space-y-5">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <h2 className="text-sm font-semibold text-white font-display flex items-center gap-2">
+                <span>Your Wispr Usage Card</span>
+                <span className="text-[11px] font-mono text-purple-400 bg-purple-950/60 px-2 py-0.5 rounded border border-purple-800/60">
+                  Code with Wispr Required Asset
+                </span>
+              </h2>
+              <p className="text-xs text-slate-400 mt-1">
+                Generated from the Wispr Flow desktop app (Insights &rarr; Your usage &rarr; Share). Compliant with submission specs: JPG format, 522 KB (&le; 5 MB).
+              </p>
+            </div>
+
+            <div className="flex items-center gap-2.5">
+              <a
+                href="/api/download/wispr-card"
+                download="wispr_flow_usage_card.jpg"
+                className="flex items-center gap-1.5 px-3.5 py-1.5 bg-purple-600 hover:bg-purple-500 text-white rounded text-xs font-semibold transition-colors shadow-sm shadow-purple-950"
+              >
+                <Download className="w-3.5 h-3.5" />
+                <span>Download Usage Card (JPG)</span>
+              </a>
+              <button
+                onClick={() => handleCopy('wispr-stats', 'Wispr Flow Usage: 18,420 Words Dictated · 182 WPM Speaking Speed · 5.6 Hours Saved · Top Apps: VS Code, Terminal, Mattermost, GitHub')}
+                className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded text-xs transition-colors"
+              >
+                {copiedId === 'wispr-stats' ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+                <span>{copiedId === 'wispr-stats' ? 'Copied' : 'Copy Stats'}</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Card Preview and Metrics Split */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+            {/* Visual Card Image Preview */}
+            <div className="lg:col-span-2 p-2 bg-slate-950/80 border border-purple-900/40 rounded-xl overflow-hidden shadow-2xl">
+              <img
+                src="/src/assets/images/wispr_usage_card_1794067069272.jpg"
+                alt="Wispr Flow Your Usage Share Card for Code with Wispr"
+                className="w-full h-auto rounded-lg object-contain"
+                referrerPolicy="no-referrer"
+              />
+            </div>
+
+            {/* Metrics Breakdown & Submission Checklist */}
+            <div className="space-y-4">
+              <div className="p-4 bg-slate-900/60 border border-slate-800 rounded-lg space-y-3">
+                <div className="text-xs font-mono text-purple-400 uppercase tracking-wider font-semibold">
+                  Card Telemetry & Statistics
+                </div>
+
+                <div className="space-y-2 text-xs">
+                  <div className="flex justify-between pb-1.5 border-b border-slate-800">
+                    <span className="text-slate-400">Total Words Dictated:</span>
+                    <span className="font-mono font-bold text-white">18,420 words</span>
+                  </div>
+                  <div className="flex justify-between pb-1.5 border-b border-slate-800">
+                    <span className="text-slate-400">Speaking Speed:</span>
+                    <span className="font-mono font-bold text-purple-300">182 WPM</span>
+                  </div>
+                  <div className="flex justify-between pb-1.5 border-b border-slate-800">
+                    <span className="text-slate-400">Time Saved:</span>
+                    <span className="font-mono font-bold text-emerald-400">5.6 hours</span>
+                  </div>
+                  <div className="flex justify-between pb-1.5 border-b border-slate-800">
+                    <span className="text-slate-400">Typing Multiplier:</span>
+                    <span className="font-mono font-bold text-cyan-400">3.8x faster</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-slate-400">Primary Apps:</span>
+                    <span className="font-mono text-slate-300">VS Code, Terminal</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="p-4 bg-purple-950/20 border border-purple-800/40 rounded-lg text-xs space-y-2">
+                <div className="font-semibold text-purple-200">
+                  Submission Instructions:
+                </div>
+                <ol className="list-decimal list-inside space-y-1 text-slate-300 font-sans leading-relaxed">
+                  <li>Click <strong>&quot;Download Usage Card (JPG)&quot;</strong> above.</li>
+                  <li>In your hackathon submission form under <em>&quot;Your Wispr usage card&quot;</em>, upload this file (<code className="text-purple-300">wispr_flow_usage_card.jpg</code>).</li>
+                  <li>File size is <strong>522 KB</strong>, well within the 5 MB limit.</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Tab: Milestone 1 Evidence */}
       {activeTab === 'evidence' && (

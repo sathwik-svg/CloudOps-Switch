@@ -627,6 +627,16 @@ Provide:
     res.json({ status: 'reset_success' });
   });
 
+  // Wispr Usage Card download route
+  app.get('/api/download/wispr-card', (req, res) => {
+    const cardPath = path.join(__dirname, 'wispr_usage_card.jpg');
+    if (fs.existsSync(cardPath)) {
+      res.download(cardPath, 'wispr_flow_usage_card.jpg');
+    } else {
+      res.status(404).json({ error: 'Wispr usage card not found' });
+    }
+  });
+
   // 404 JSON fallback for unmatched API routes
   app.all('/api/*', (req, res) => {
     res.status(404).json({ error: `API route ${req.method} ${req.url} not found` });
