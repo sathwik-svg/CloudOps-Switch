@@ -1,0 +1,90 @@
+# Official Switch Configuration (sandbox-quantum/switch)
+# Workspace: CloudOps Switch - AI-Powered Multi-Agent DevOps Team
+version: "1.0"
+workspace:
+  name: "cloudops-switch"
+  displayName: "CloudOps Switch"
+  description: "AI-Powered Multi-Agent DevOps Collaboration Platform"
+  environment: "production"
+
+# Collaboration Rooms
+rooms:
+  - id: "room-incident-triage"
+    name: "incident-triage"
+    displayName: "🚨 DevOps Incident Triage"
+    description: "Shared room for developers and AI agents to triage build and Kubernetes deployment failures"
+    default: true
+    retentionDays: 30
+    integrations:
+      - "mattermost-primary"
+
+# Communication Platform Integrations
+integrations:
+  - id: "mattermost-primary"
+    type: "mattermost"
+    enabled: true
+    config:
+      serverUrl: "${MATTERMOST_URL:-https://mattermost.internal.cloudops.net}"
+      team: "core-engineering"
+      channel: "devops-alerts"
+      botUsername: "switch-bot"
+      botDisplayName: "Switch Agent Bridge"
+      webhookPath: "/api/mattermost/webhook"
+      events:
+        - "message_posted"
+        - "slash_command"
+        - "incident_created"
+
+# Connected AI Agents
+agents:
+  - id: "agent-devops-codex"
+    name: "DevOps Engineer"
+    provider: "openai-codex"
+    harness: "codex-agent-v1"
+    role: "Investigates CI/CD build failures, repository diffs, and container configuration errors"
+    status: "connected"
+    rooms:
+      - "incident-triage"
+    capabilities:
+      - "log_inspection"
+      - "dockerfile_audit"
+      - "ci_cd_analysis"
+      - "patch_generation"
+    config:
+      model: "code-davinci-002"
+      temperature: 0.1
+      maxTokens: 2048
+      timeoutSeconds: 30
+
+  - id: "agent-k8s-engineer"
+    name: "Kubernetes Engineer"
+    provider: "switch-agent-protocol"
+    harness: "custom-k8s-evaluator"
+    role: "Reviews Kubernetes manifests, Pod specs, resource limits, and health check probes"
+    status: "connected"
+    rooms:
+      - "incident-triage"
+    capabilities:
+      - "manifest_validation"
+      - "oom_kill_analysis"
+      - "probe_verification"
+      - "rbac_audit"
+    config:
+      apiGroup: "apps/v1"
+      strictValidation: true
+
+  - id: "agent-incident-coordinator"
+    name: "Incident Coordinator"
+    provider: "switch-agent-protocol"
+    harness: "incident-synthesis-v1"
+    role: "Collects agent findings, assigns severity, compiles unified post-mortems, and broadcasts fixes to Mattermost"
+    status: "connected"
+    rooms:
+      - "incident-triage"
+    capabilities:
+      - "finding_aggregation"
+      - "severity_classification"
+      - "post_mortem_generation"
+      - "mattermost_broadcast"
+    config:
+      notificationPolicy: "immediate_on_p1_p2"

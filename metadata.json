@@ -1,0 +1,6 @@
+{
+  "name": "CloudOps Switch",
+  "description": "AI-powered multi-agent DevOps collaboration platform connecting OpenAI Codex, Kubernetes, and Incident Coordinator agents through Switch rooms and Mattermost.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

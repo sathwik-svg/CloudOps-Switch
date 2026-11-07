@@ -1,0 +1,22 @@
+version: "3.8"
+
+services:
+  cloudops-switch:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: cloudops-switch-platform
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - GEMINI_API_KEY=${GEMINI_API_KEY:-}
+      - MATTERMOST_URL=${MATTERMOST_URL:-https://mattermost.internal.cloudops.net}
+      - SWITCH_ROOM=incident-triage
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
