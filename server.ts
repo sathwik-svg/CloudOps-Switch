@@ -637,6 +637,16 @@ Provide:
     }
   });
 
+  // Blog Cover Banner download route
+  app.get('/api/download/blog-banner', (req, res) => {
+    const bannerPath = path.join(__dirname, 'blog_cover_banner.jpg');
+    if (fs.existsSync(bannerPath)) {
+      res.download(bannerPath, 'cloudops_switch_blog_cover.jpg');
+    } else {
+      res.status(404).json({ error: 'Blog cover banner not found' });
+    }
+  });
+
   // 404 JSON fallback for unmatched API routes
   app.all('/api/*', (req, res) => {
     res.status(404).json({ error: `API route ${req.method} ${req.url} not found` });

@@ -501,6 +501,26 @@ Check out our open-source repository, architecture, and live demo below:
               </div>
             </div>
 
+            {/* Cover Banner Image */}
+            <div className="relative rounded-lg overflow-hidden border border-slate-800 group shadow-lg">
+              <img
+                src="/src/assets/images/blog_cover_banner_1794068081848.jpg"
+                alt="CloudOps Switch Multi-Agent DevOps Team Official Blog Cover Banner"
+                className="w-full h-auto object-cover max-h-[340px]"
+                referrerPolicy="no-referrer"
+              />
+              <div className="absolute top-3 right-3">
+                <a
+                  href="/api/download/blog-banner"
+                  download="cloudops_switch_blog_cover.jpg"
+                  className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-900/90 hover:bg-slate-900 text-slate-200 border border-slate-700/80 rounded text-xs font-semibold backdrop-blur-sm transition-colors shadow-md"
+                >
+                  <Download className="w-3.5 h-3.5 text-cyan-400" />
+                  <span>Download Cover Banner (16:9)</span>
+                </a>
+              </div>
+            </div>
+
             <div className="space-y-4 font-sans text-slate-300 leading-relaxed">
               <h2 className="text-sm font-bold text-white font-display border-b border-slate-800/80 pb-1 pt-2">
                 1. The 2:14 AM PagerDuty Nightmare
