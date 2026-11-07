@@ -627,6 +627,11 @@ Provide:
     res.json({ status: 'reset_success' });
   });
 
+  // 404 JSON fallback for unmatched API routes
+  app.all('/api/*', (req, res) => {
+    res.status(404).json({ error: `API route ${req.method} ${req.url} not found` });
+  });
+
   // Vite Integration in Development
   if (!isProd) {
     const { createServer: createViteServer } = await import('vite');
@@ -642,8 +647,8 @@ Provide:
     });
   }
 
-  app.listen(PORT, () => {
-    console.log(`[CloudOps Switch] Server running on port ${PORT}`);
+  app.listen(Number(PORT), '0.0.0.0', () => {
+    console.log(`[CloudOps Switch] Server running on 0.0.0.0:${PORT}`);
   });
 }
 
